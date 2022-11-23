@@ -1,5 +1,5 @@
 deploy:
-	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'docker network create --driver=overlay traefik-public || true'
+	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'docker network create --driver=overlay --attachable traefik-public || true'
 	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'export NODE_ID=$$(docker info -f "{{.Swarm.NodeID}}") ; echo NODE_ID=$$NODE_ID'
 	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'docker node update --label-add swarmpit.db-data=true $$(docker info -f "{{.Swarm.NodeID}}")'
 	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'docker node update --label-add swarmpit.influx-data=true $$(docker info -f "{{.Swarm.NodeID}}")'
